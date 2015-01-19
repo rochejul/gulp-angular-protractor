@@ -16,7 +16,8 @@
     "test": "mocha --recursive --colors test/*.js"
   },
   "files": [
-    "index.js"
+    "index.js",
+	"gulp-angular-protractor"
   ],
   "keywords": [
     "gulpplugin"
