@@ -1,4 +1,9 @@
-# gulp-angular-protractor [![Build Status](https://travis-ci.org/rochejul/gulp-angular-protractor.svg?branch=master)](https://travis-ci.org/rochejul/gulp-angular-protractor)
+# gulp-angular-protractor
+[![Build Status](https://travis-ci.org/rochejul/gulp-angular-protractor.svg?branch=master)](https://travis-ci.org/rochejul/gulp-angular-protractor)[![Dependency Status](https://david-dm.org/rochejul/gulp-angular-protractor.svg)](https://david-dm.org/rochejul/gulp-angular-protractor)
+[![devDependency Status](https://david-dm.org/rochejul/gulp-angular-protractor/dev-status.svg)](https://david-dm.org/rochejul/gulp-angular-protractor#info=devDependencies)
+
+[![NPM](https://nodei.co/npm/gulp-angular-protractor.png?downloads=true&downloadRank=true)](https://nodei.co/npm/gulp-angular-protractor/)
+[![NPM](https://nodei.co/npm-dl/gulp-angular-protractor.png?&months=6&height=3)](https://nodei.co/npm/gulp-angular-protractor/)
 
 > Gulp plugin to run protractor tests with automatic launch and stop of the WebDriver server
 
