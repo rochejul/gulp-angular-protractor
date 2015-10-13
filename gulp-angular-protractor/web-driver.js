@@ -28,7 +28,7 @@ var
 
     PROTRACTOR_COMMAND = path.resolve(gprotractor.getProtractorDir() + '/protractor' + WIN_COMMAND_EXTENSION),
 
-    WEB_DRIVER_LOG_STARTED = 'Started org.openqa.jetty.jetty.Server',
+    WEB_DRIVER_LOG_STARTED = 'Selenium Server is up and running',
     WEB_DRIVER_LOG_STOPPED = 'Command request: shutDownSeleniumServer',
     WEB_DRIVER_SHUTDOWN_PATH = '/selenium-server/driver/?cmd=shutDownSeleniumServer',
     WEB_DRIVER_COMMAND = path.resolve(gprotractor.getProtractorDir() + '/webdriver-manager' + WIN_COMMAND_EXTENSION),
