@@ -1,6 +1,6 @@
 {
   "name": "gulp-angular-protractor",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Based on the gulp-protractor plugin with an option to start / stop automatically the webdriver server",
   "license": "MIT",
   "repository": "rochejul/gulp-angular-protractor",
@@ -24,7 +24,7 @@
     "gulpplugin"
   ],
   "dependencies": {
-    "gulp-util": "^3.0.1",
+    "gulp-util": "3.0.1",
     "gulp-protractor": "0.0.11",
 
     "event-stream": "3.1.5",
