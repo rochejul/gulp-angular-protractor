@@ -60,18 +60,18 @@ module.exports = function (options, webDriverUrl) {
                             }
 
                             if (self) {
-                                if (code) {
-                                    self.emit('error', new PluginError(PLUGIN_NAME, 'protractor exited with code ' + code));
+                                try {
+                                    webDriver.webDriverStandaloneStop(webDriverUrl, function () {
+                                        if (code) {
+                                            self.emit('error', new PluginError(PLUGIN_NAME, 'protractor exited with code ' + code));
 
-                                } else {
-                                    try {
-                                        webDriver.webDriverStandaloneStop(webDriverUrl, function () {
+                                        } else {
                                             self.emit('end');
-                                        });
+                                        }
+                                    });
 
-                                    } catch (err) {
-                                        self.emit('error', new PluginError(PLUGIN_NAME, err));
-                                    }
+                                } catch (err) {
+                                    self.emit('error', new PluginError(PLUGIN_NAME, err));
                                 }
                             }
                         });
