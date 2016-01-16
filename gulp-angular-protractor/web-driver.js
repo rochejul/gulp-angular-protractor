@@ -26,7 +26,7 @@ var
     PLUGIN_NAME = require('./constants.json').PLUGIN_NAME,
     WIN_COMMAND_EXTENSION = /^win/.test(process.platform) ? '.cmd': '',
 
-    PROTRACTOR_COMMAND = path.resolve(gprotractor.getProtractorDir() + '/protractor' + WIN_COMMAND_EXTENSION),
+    PROTRACTOR_COMMAND = path.resolve("'" + gprotractor.getProtractorDir()+ "'" + '/protractor' + WIN_COMMAND_EXTENSION),
 
     WEB_DRIVER_LOG_STARTED = 'Started org.openqa.jetty.jetty.Server',
     WEB_DRIVER_LOG_STARTED_NEW = 'Selenium Server is up and running',
