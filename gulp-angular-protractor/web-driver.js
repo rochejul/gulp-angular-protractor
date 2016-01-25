@@ -5,7 +5,7 @@
  * Utility module to manage the WebDriver
  *
  * @author Julien Roche
- * @version 0.0.1
+ * @version 0.0.6
  * @since 0.0.1
  */
 
@@ -26,13 +26,14 @@ var
     PLUGIN_NAME = require('./constants.json').PLUGIN_NAME,
     WIN_COMMAND_EXTENSION = /^win/.test(process.platform) ? '.cmd': '',
 
-    PROTRACTOR_COMMAND = path.resolve(gprotractor.getProtractorDir() + '/protractor' + WIN_COMMAND_EXTENSION),
+    PROTRACTOR_DIR = gprotractor.getProtractorDir(),
+    PROTRACTOR_COMMAND = 'protractor' + WIN_COMMAND_EXTENSION,
 
     WEB_DRIVER_LOG_STARTED = 'Started org.openqa.jetty.jetty.Server',
     WEB_DRIVER_LOG_STARTED_NEW = 'Selenium Server is up and running',
     WEB_DRIVER_LOG_STOPPED = 'Command request: shutDownSeleniumServer',
     WEB_DRIVER_SHUTDOWN_PATH = '/selenium-server/driver/?cmd=shutDownSeleniumServer',
-    WEB_DRIVER_COMMAND = path.resolve(gprotractor.getProtractorDir() + '/webdriver-manager' + WIN_COMMAND_EXTENSION),
+    WEB_DRIVER_COMMAND = 'webdriver-manager' + WIN_COMMAND_EXTENSION,
     WEB_DRIVER_START_COMMAND = 'start';
 
 module.exports = {
@@ -75,7 +76,8 @@ module.exports = {
     'runProtractor': function (args) {
         return childProcess.spawn(PROTRACTOR_COMMAND, args, {
             'stdio': 'inherit',
-            'env': process.env
+            'env': process.env,
+            'cwd': PROTRACTOR_DIR
         });
     },
 
@@ -111,7 +113,7 @@ module.exports = {
         var
             callbackWasCalled = false,
             logOutput = true,
-            command = childProcess.spawn(WEB_DRIVER_COMMAND, [WEB_DRIVER_START_COMMAND]);
+            command = childProcess.spawn(WEB_DRIVER_COMMAND, [WEB_DRIVER_START_COMMAND], { 'cwd': PROTRACTOR_DIR });
 
         command.once('close', function (errorCode) {
             gutil.log(PLUGIN_NAME + ' - Webdriver standalone server will be closed');

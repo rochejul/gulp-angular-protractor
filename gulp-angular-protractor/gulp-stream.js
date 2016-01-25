@@ -7,7 +7,7 @@
  * TODO: try to enhance that with a real override
  *
  * @author Julien Roche
- * @version 0.0.1
+ * @version 0.0.6
  * @since 0.0.1
  */
 
@@ -20,6 +20,7 @@ var
 
     // Import required API
     es = require('event-stream'),
+    path = require('path'),
 
     // Import internal API
     webDriver = require('./web-driver'),
@@ -45,7 +46,9 @@ module.exports = function (options, webDriverUrl) {
             }
 
             // Pass in the config file
-            args.unshift(options.configFile);
+            var configFilePath = path.resolve(path.join(process.cwd(), options.configFile));
+            gutil.log(PLUGIN_NAME + ' - We have the config file to the following path: ' + configFilePath);
+            args.unshift(configFilePath);
 
             // Start the Web Driver server
             try {
