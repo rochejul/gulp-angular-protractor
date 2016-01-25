@@ -13,12 +13,13 @@
     "node": ">=0.10.0"
   },
   "scripts": {
-    "shrinkwrap": "npm shrinkwrap --dev",
+    "shrinkwrap": "npm shrinkwrap",
     "test": "mocha --recursive --colors test/*.js"
   },
   "files": [
     "index.js",
-	"gulp-angular-protractor"
+	"gulp-angular-protractor",
+    "npm-shrinkwrap.json"
   ],
   "keywords": [
     "gulpplugin"
