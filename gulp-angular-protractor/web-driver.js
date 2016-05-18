@@ -74,7 +74,7 @@ module.exports = {
      * @returns {Object}
      */
     'runProtractor': function (args) {
-        return childProcess.spawn(PROTRACTOR_COMMAND, args, {
+        return childProcess.spawn(path.resolve(PROTRACTOR_DIR, PROTRACTOR_COMMAND), args, {
             'stdio': 'inherit',
             'env': process.env,
             'cwd': PROTRACTOR_DIR
@@ -113,7 +113,7 @@ module.exports = {
         var
             callbackWasCalled = false,
             logOutput = true,
-            command = childProcess.spawn(WEB_DRIVER_COMMAND, [WEB_DRIVER_START_COMMAND], { 'cwd': PROTRACTOR_DIR });
+            command = childProcess.spawn(path.resolve(PROTRACTOR_DIR, WEB_DRIVER_COMMAND), [WEB_DRIVER_START_COMMAND], { 'cwd': PROTRACTOR_DIR });
 
         command.once('close', function (errorCode) {
             gutil.log(PLUGIN_NAME + ' - Webdriver standalone server will be closed');
