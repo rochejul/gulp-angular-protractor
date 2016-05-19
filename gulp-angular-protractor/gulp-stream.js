@@ -30,7 +30,7 @@ var
 
 module.exports = function (options, webDriverUrl) {
     var files = [],
-        args = options.args || [ ];
+        args = JSON.parse(JSON.stringify(options.args)) || [];
 
     return es.through(
         function(file) {
