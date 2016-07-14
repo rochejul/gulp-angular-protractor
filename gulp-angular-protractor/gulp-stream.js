@@ -30,7 +30,7 @@ var
 
 module.exports = function (options, webDriverUrl) {
     var files = [],
-        args = options.args || [ ];
+        args = options.args ? options.args.slice(0) : [ ];
 
     if (options.debug) {
         args.push('debug');
