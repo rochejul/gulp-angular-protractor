@@ -32,6 +32,10 @@ module.exports = function (options, webDriverUrl) {
     var files = [],
         args = options.args || [ ];
 
+    if (options.debug) {
+        args.push('debug');
+    }
+
     return es.through(
         function(file) {
             files.push(file.path);
