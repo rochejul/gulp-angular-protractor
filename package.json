@@ -1,6 +1,6 @@
 {
   "name": "gulp-angular-protractor",
-  "version": "0.1.2-SNAPSHOT",
+  "version": "0.1.2",
   "description": "Based on the gulp-protractor plugin with an option to start / stop automatically the webdriver server",
   "license": "MIT",
   "repository": "rochejul/gulp-angular-protractor",
@@ -14,7 +14,6 @@
   },
   "scripts": {
     "npmversion": "node ./node_modules/npmversion/bin/npmversion",
-    "prenpmversion": "npm run build-es5 && git add -A lib-es5",
     "bump-release": "npm test && npm run npmversion -- --unpreid --git-push",
     "bump-major": "npm test && npm run npmversion -- --increment major --git-push",
     "bump-minor": "npm test && npm run npmversion -- --increment minor --git-push",
