@@ -13,8 +13,16 @@
     "node": ">=0.10.0"
   },
   "scripts": {
-    "shrinkwrap": "npm shrinkwrap",
-    "test": "mocha --recursive --colors test/*.js"
+    "npmversion": "node ./node_modules/npmversion/bin/npmversion",
+    "prenpmversion": "npm run build-es5 && git add -A lib-es5",
+    "bump-release": "npm test && npm run npmversion -- --unpreid --git-push",
+    "bump-major": "npm test && npm run npmversion -- --increment major --git-push",
+    "bump-minor": "npm test && npm run npmversion -- --increment minor --git-push",
+    "bump-patch": "npm test && npm run npmversion -- --increment major --git-push",
+    "bump-major-beta": "npm run npmversion -- --increment major --preid beta --nogit-tag --git-push",
+    "bump-minor-beta": "npm run npmversion -- --increment minor --preid beta --nogit-tag --git-push",
+    "bump-patch-beta": "npm run npmversion -- --increment major --preid beta --nogit-tag --git-push",
+    "test": "mocha --recursive --colors test/"
   },
   "files": [
     "index.js",
@@ -31,8 +39,9 @@
     "lodash": "2.4.1"
   },
   "devDependencies": {
-    "mocha": "*",
     "chai": "1.10.0",
-    "nock": "0.53.0"
+    "mocha": "*",
+    "nock": "0.53.0",
+    "npmversion": "1.2.0"
   }
 }
