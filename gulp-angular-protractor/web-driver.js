@@ -88,14 +88,15 @@ module.exports = {
      * @method
      * @static
      * @param {Function} callback
+     * @param {boolean} [verbose=true]
      */
-    'webDriverStandaloneStart': function (callback) {
+    'webDriverStandaloneStart': function (callback, verbose) {
         gutil.log(PLUGIN_NAME + ' - Webdriver standalone server will be started');
 
         function _interceptLogData(data) {
             var dataString = data.toString();
 
-            if (logOutput) {
+            if (logOutput && verbose) {
                 gutil.log(dataString);
             }
 
@@ -107,7 +108,10 @@ module.exports = {
 
             } else if (dataString.indexOf(WEB_DRIVER_LOG_STOPPED) >= 0) {
                 logOutput = true;
-                gutil.log(dataString);
+                
+                if (verbose) {
+                    gutil.log(dataString);
+                }
             }
         }
 
@@ -167,14 +171,15 @@ module.exports = {
      * @method
      * @static
      * @param {Function} callback
+     * @param {boolean} [verbose=true]
      */
-    'webDriverUpdateAndStart': function (callback) {
+    'webDriverUpdateAndStart': function (callback, verbose) {
         var self = this;
         gutil.log(PLUGIN_NAME + ' - Webdriver standalone will be updated');
 
         this.webDriverUpdate(function () {
             gutil.log(PLUGIN_NAME + ' - Webdriver standalone is updated');
-            self.webDriverStandaloneStart(callback);
+            self.webDriverStandaloneStart(callback, verbose);
         });
     }
 };

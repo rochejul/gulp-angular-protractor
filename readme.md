@@ -88,6 +88,12 @@ Default: `false`
 
 Enables Protractor's [debug mode](https://github.com/angular/protractor/blob/master/docs/debugging.md), which can be used to pause tests during execution and to view stack traces.
 
+#### options.verbose
+Type: `Boolean`
+Default: `true`
+
+Display verbosely the logs
+
 
 ## License
 

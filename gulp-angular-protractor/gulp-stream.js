@@ -30,7 +30,8 @@ var
 
 module.exports = function (options, webDriverUrl) {
     var files = [],
-        args = options.args ? options.args.slice(0) : [ ];
+        args = options.args ? options.args.slice(0) : [ ],
+        verbose = options.verbose !== false;
 
     if (options.debug) {
         args.push('debug');
@@ -82,7 +83,7 @@ module.exports = function (options, webDriverUrl) {
                                 }
                             }
                         });
-                });
+                }, verbose);
 
             } catch (err) {
                 this.emit('error', new PluginError(PLUGIN_NAME, err));
