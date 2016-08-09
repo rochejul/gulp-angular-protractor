@@ -11,6 +11,7 @@
 
 'use strict';
 
+// Imports
 var
     // Import gulp plugins
     gutil = require('gulp-util'),
@@ -21,13 +22,17 @@ var
     http = require('http'),
     childProcess = require('child_process'),
     
-    // Constants
+    // Import internals libraries
+    protractorUtils = require('./protractor-utils');
+
+// Constants & variables
+var
     PLUGIN_NAME = require('./constants.json').PLUGIN_NAME,
     IS_WINDOWS = /^win/.test(process.platform),
     WIN_COMMAND_EXTENSION = IS_WINDOWS ? '.cmd': '',
     COMMAND_RELATIVE_PATH = IS_WINDOWS ? '' : './',
 
-    PROTRACTOR_DIR = gprotractor.getProtractorDir(),
+    PROTRACTOR_DIR = protractorUtils.getProtractorDir(),
     PROTRACTOR_COMMAND = 'protractor' + WIN_COMMAND_EXTENSION,
 
     WEB_DRIVER_LOG_STARTED = 'Started org.openqa.jetty.jetty.Server',
@@ -108,7 +113,7 @@ module.exports = {
 
             } else if (dataString.indexOf(WEB_DRIVER_LOG_STOPPED) >= 0) {
                 logOutput = true;
-                
+
                 if (verbose) {
                     gutil.log(dataString);
                 }
@@ -161,6 +166,7 @@ module.exports = {
      *
      * @method
      * @static
+     * @params {{ 'browsers' }} options
      * @param {Function} callback
      */
     'webDriverUpdate': gprotractor.webdriver_update,
