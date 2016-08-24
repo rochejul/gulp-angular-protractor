@@ -80,7 +80,7 @@ module.exports = function (options, webDriverUrl, autoStartServer) {
                                     }
                                 }
                             });
-                    }, verbose, options.webDriverUpdate);
+                    }, verbose, options.webDriverUpdate, options.webDriverStart);
 
                 } else {
                     // Just run protractor

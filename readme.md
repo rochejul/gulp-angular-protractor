@@ -102,6 +102,16 @@ Default: `['chrome']`
 
 List of browsers to update the webdriver
 
+### options.webDriverStart
+Type: `Object`
+Default: `undefined`
+
+### options.webDriverStart.args
+Type: `Array`
+Default: `[]`
+
+Additional arguments to pass for the start of the webdriver
+
 
 ## License
 

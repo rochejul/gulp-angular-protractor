@@ -115,8 +115,9 @@ module.exports = {
      * @static
      * @param {Function} callback
      * @param {boolean} [verbose=true]
+     * @param {Object} [startOptions]
      */
-    'webDriverStandaloneStart': function (callback, verbose) {
+    'webDriverStandaloneStart': function (callback, verbose, startOptions) {
         gutil.log(PLUGIN_NAME + ' - Webdriver standalone server will be started');
 
         function _interceptLogData(data) {
@@ -144,7 +145,11 @@ module.exports = {
         var
             callbackWasCalled = false,
             logOutput = true,
-            command = childProcess.spawn(COMMAND_RELATIVE_PATH + WEB_DRIVER_COMMAND, [WEB_DRIVER_START_COMMAND], { 'cwd': PROTRACTOR_DIR });
+            command = childProcess.spawn(
+                COMMAND_RELATIVE_PATH + WEB_DRIVER_COMMAND,
+                [WEB_DRIVER_START_COMMAND].concat(startOptions && startOptions.args ? startOptions.args : []),
+                { 'cwd': PROTRACTOR_DIR }
+            );
 
         command.once('close', function (errorCode) {
             gutil.log(PLUGIN_NAME + ' - Webdriver standalone server will be closed');
@@ -226,14 +231,15 @@ module.exports = {
      * @param {Function} callback
      * @param {boolean} [verbose=true]
      * @param {Object} [updateOptions]
+     * @param {Object} [startOptions]
      */
-    'webDriverUpdateAndStart': function (callback, verbose, updateOptions) {
+    'webDriverUpdateAndStart': function (callback, verbose, updateOptions, startOptions) {
         var self = this;
         gutil.log(PLUGIN_NAME + ' - Webdriver standalone will be updated');
 
         this.webDriverUpdate(updateOptions, function () {
             gutil.log(PLUGIN_NAME + ' - Webdriver standalone is updated');
-            self.webDriverStandaloneStart(callback, verbose);
+            self.webDriverStandaloneStart(callback, verbose, startOptions);
         });
     }
 };
