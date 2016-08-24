@@ -209,6 +209,10 @@ module.exports = {
             browsers.forEach(function(element) {
                 args.push('--' + element);
             });
+
+            if (options.args) {
+                args = args.concat(options.args);
+            }
         }
 
         childProcess

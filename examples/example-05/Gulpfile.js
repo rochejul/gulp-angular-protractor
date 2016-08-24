@@ -16,7 +16,8 @@ gulp.task('protractor', function(callback) {
             'autoStartStopServer': true,
             'verbose': false,
             'webDriverUpdate': {
-                'browsers': ['ie']
+                'browsers': ['ie'],
+                'args': ['--ie32']
             },
             'webDriverStart': {
                 'args': ['--ie32']
