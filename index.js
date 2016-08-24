@@ -14,7 +14,6 @@
 var
     // Import gulp plugins
     gutil = require('gulp-util'),
-    gprotractor = require('gulp-protractor'),
 
     // Import required API
     fs = require('fs'),
@@ -70,10 +69,10 @@ module.exports = function (options) {
         gutil.log(PLUGIN_NAME + ' - The selenium address used is: ' + webDriverUrl);
         gutil.log(PLUGIN_NAME + ' - The selenium shutdown address used is: ' + webDriverShutDownUrl);
 
-        return gulpStream(mergedOptions, webDriverUrl);
+        return gulpStream(mergedOptions, webDriverUrl, true);
 
     } else {
         gutil.log(PLUGIN_NAME + ' - Basic use (as the gulp-protractor plugin).');
-        return gprotractor.protractor(mergedOptions);
+        return gulpStream(mergedOptions, webDriverUrl, false);
     }
 };

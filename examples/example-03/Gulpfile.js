@@ -14,7 +14,10 @@ gulp.task('protractor', function(callback) {
             'configFile': 'protractor.conf.js',
             'debug': false,
             'autoStartStopServer': true,
-            'verbose': false
+            'verbose': false,
+            'webDriverUpdate': {
+                'browsers': ['ie', 'chrome']
+            }
         }))
         .on('error', function(e) {
             console.log(e);
