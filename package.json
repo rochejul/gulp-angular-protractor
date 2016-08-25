@@ -41,6 +41,6 @@
     "chai": "1.10.0",
     "mocha": "*",
     "nock": "0.53.0",
-    "npmversion": "1.2.0"
+    "npmversion": "1.2.1"
   }
 }
