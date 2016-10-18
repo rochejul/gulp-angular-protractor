@@ -92,7 +92,31 @@ Enables Protractor's [debug mode](https://github.com/angular/protractor/blob/mas
 Type: `Boolean`
 Default: `true`
 
-Display verbosely the logs
+### options.webDriverUpdate
+Type: `Object`
+Default: `undefined`
+
+### options.webDriverUpdate.browsers
+Type: `Array`
+Default: `['chrome']`
+
+List of browsers to update the webdriver
+
+### options.webDriverUpdate.args
+Type: `Array`
+Default: `[]`
+
+Additional arguments to pass for the update of the webdriver
+
+### options.webDriverStart
+Type: `Object`
+Default: `undefined`
+
+### options.webDriverStart.args
+Type: `Array`
+Default: `[]`
+
+Additional arguments to pass for the start of the webdriver
 
 
 ## License

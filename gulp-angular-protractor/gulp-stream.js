@@ -28,7 +28,7 @@ var
     // Constants
     PLUGIN_NAME = require('./constants.json').PLUGIN_NAME;
 
-module.exports = function (options, webDriverUrl) {
+module.exports = function (options, webDriverUrl, autoStartServer) {
     var files = [],
         args = options.args ? options.args.slice(0) : [ ],
         verbose = options.verbose !== false;
@@ -57,33 +57,44 @@ module.exports = function (options, webDriverUrl) {
 
             // Start the Web Driver server
             try {
-                webDriver.webDriverUpdateAndStart(function () {
-                    gutil.log(PLUGIN_NAME + ' - We will run the Protractor engine');
+                if (autoStartServer) {
+                    // Start the update, run the server, run protractor and stop the server
+                    webDriver.webDriverUpdateAndStart(function () {
+                        gutil.log(PLUGIN_NAME + ' - We will run the Protractor engine');
 
-                    var child = webDriver
-                        .runProtractor(args)
-                        .on('exit', function(code) {
-                            if (child) {
-                                child.kill();
-                            }
+                        webDriver
+                            .runProtractorAndWait(args, function(code) {
+                                if (self) {
+                                    try {
+                                        webDriver.webDriverStandaloneStop(webDriverUrl, function () {
+                                            if (code) {
+                                                self.emit('error', new PluginError(PLUGIN_NAME, 'protractor exited with code ' + code));
 
-                            if (self) {
-                                try {
-                                    webDriver.webDriverStandaloneStop(webDriverUrl, function () {
-                                        if (code) {
-                                            self.emit('error', new PluginError(PLUGIN_NAME, 'protractor exited with code ' + code));
+                                            } else {
+                                                self.emit('end');
+                                            }
+                                        });
 
-                                        } else {
-                                            self.emit('end');
-                                        }
-                                    });
-
-                                } catch (err) {
-                                    self.emit('error', new PluginError(PLUGIN_NAME, err));
+                                    } catch (err) {
+                                        self.emit('error', new PluginError(PLUGIN_NAME, err));
+                                    }
                                 }
+                            });
+                    }, verbose, options.webDriverUpdate, options.webDriverStart);
+
+                } else {
+                    // Just run protractor
+                    webDriver.runProtractorAndWait(args, function (code) {
+                        if (self) {
+                            if (code) {
+                                self.emit('error', new PluginError(PLUGIN_NAME, 'protractor exited with code ' + code));
+
+                            } else {
+                                self.emit('end');
                             }
-                        });
-                }, verbose);
+                        }
+                    });
+                }
 
             } catch (err) {
                 this.emit('error', new PluginError(PLUGIN_NAME, err));

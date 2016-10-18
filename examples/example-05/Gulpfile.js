@@ -16,7 +16,11 @@ gulp.task('protractor', function(callback) {
             'autoStartStopServer': true,
             'verbose': false,
             'webDriverUpdate': {
-                'browsers': ['ie', 'chrome']
+                'browsers': ['ie'],
+                'args': ['--ie32']
+            },
+            'webDriverStart': {
+                'args': ['--ie32']
             }
         }))
         .on('error', function(e) {

@@ -11,23 +11,27 @@
 
 'use strict';
 
+// Imports
 var
     // Import gulp plugins
     gutil = require('gulp-util'),
-    gprotractor = require('gulp-protractor'),
 
     // Import required API
     url = require('url'),
     http = require('http'),
     childProcess = require('child_process'),
-    
-    // Constants
+
+    // Import internals libraries
+    protractorUtils = require('./protractor-utils');
+
+// Constants & variables
+var
     PLUGIN_NAME = require('./constants.json').PLUGIN_NAME,
     IS_WINDOWS = /^win/.test(process.platform),
     WIN_COMMAND_EXTENSION = IS_WINDOWS ? '.cmd': '',
     COMMAND_RELATIVE_PATH = IS_WINDOWS ? '' : './',
 
-    PROTRACTOR_DIR = gprotractor.getProtractorDir(),
+    PROTRACTOR_DIR = protractorUtils.getProtractorDir(),
     PROTRACTOR_COMMAND = 'protractor' + WIN_COMMAND_EXTENSION,
 
     WEB_DRIVER_LOG_STARTED = 'Started org.openqa.jetty.jetty.Server',
@@ -83,14 +87,37 @@ module.exports = {
     },
 
     /**
+     * Execute the protractor engine
+     *
+     * @method
+     * @static
+     * @param {string[]} args
+     * @param {Function} callback
+     */
+    'runProtractorAndWait': function (args, callback) {
+        var child = this
+            .runProtractor(args)
+            .on('exit', function(code) {
+                if (child) {
+                    child.kill();
+                }
+
+                if (callback) {
+                    callback(code);
+                }
+            });
+    },
+
+    /**
      * Start the WebDriver server
      *
      * @method
      * @static
      * @param {Function} callback
      * @param {boolean} [verbose=true]
+     * @param {Object} [startOptions]
      */
-    'webDriverStandaloneStart': function (callback, verbose) {
+    'webDriverStandaloneStart': function (callback, verbose, startOptions) {
         gutil.log(PLUGIN_NAME + ' - Webdriver standalone server will be started');
 
         function _interceptLogData(data) {
@@ -108,7 +135,7 @@ module.exports = {
 
             } else if (dataString.indexOf(WEB_DRIVER_LOG_STOPPED) >= 0) {
                 logOutput = true;
-                
+
                 if (verbose) {
                     gutil.log(dataString);
                 }
@@ -118,7 +145,11 @@ module.exports = {
         var
             callbackWasCalled = false,
             logOutput = true,
-            command = childProcess.spawn(COMMAND_RELATIVE_PATH + WEB_DRIVER_COMMAND, [WEB_DRIVER_START_COMMAND], { 'cwd': PROTRACTOR_DIR });
+            command = childProcess.spawn(
+                COMMAND_RELATIVE_PATH + WEB_DRIVER_COMMAND,
+                [WEB_DRIVER_START_COMMAND].concat(startOptions && startOptions.args ? startOptions.args : []),
+                { 'cwd': PROTRACTOR_DIR }
+            );
 
         command.once('close', function (errorCode) {
             gutil.log(PLUGIN_NAME + ' - Webdriver standalone server will be closed');
@@ -161,9 +192,40 @@ module.exports = {
      *
      * @method
      * @static
-     * @param {Function} callback
+     * @params {{ 'browsers' } | Function} optsOrCallback
+     * @param {Function} cb
      */
-    'webDriverUpdate': gprotractor.webdriver_update,
+    'webDriverUpdate': function (optsOrCallback, cb) {
+        var callback = (cb ? cb : optsOrCallback);
+        var options = (cb ? optsOrCallback : null);
+        var args = ['update', '--standalone'];
+        var browsers = ['chrome'];
+
+        if (options) {
+            if (options.browsers && options.browsers.length > 0) {
+                browsers = options.browsers;
+            }
+
+            browsers.forEach(function(element) {
+                args.push('--' + element);
+            });
+
+            if (options.args) {
+                args = args.concat(options.args);
+            }
+        }
+
+        childProcess
+            .spawn(
+                COMMAND_RELATIVE_PATH + WEB_DRIVER_COMMAND,
+                args,
+                {
+                    'cwd': PROTRACTOR_DIR,
+                    'stdio': 'inherit'
+                }
+            )
+            .once('close', callback);
+    },
 
     /**
      * Update and start the webDriver connector
@@ -172,14 +234,16 @@ module.exports = {
      * @static
      * @param {Function} callback
      * @param {boolean} [verbose=true]
+     * @param {Object} [updateOptions]
+     * @param {Object} [startOptions]
      */
-    'webDriverUpdateAndStart': function (callback, verbose) {
+    'webDriverUpdateAndStart': function (callback, verbose, updateOptions, startOptions) {
         var self = this;
         gutil.log(PLUGIN_NAME + ' - Webdriver standalone will be updated');
 
-        this.webDriverUpdate(function () {
+        this.webDriverUpdate(updateOptions, function () {
             gutil.log(PLUGIN_NAME + ' - Webdriver standalone is updated');
-            self.webDriverStandaloneStart(callback, verbose);
+            self.webDriverStandaloneStart(callback, verbose, startOptions);
         });
     }
 };
