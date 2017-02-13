@@ -18,7 +18,7 @@ var
     _ = require('lodash'),
 
     // Import internal API
-    webDriver = require('./gulp-angular-protractor/web-driver'),
+    webDriverFactory = require('./gulp-angular-protractor/web-driver'),
     gulpStream = require('./gulp-angular-protractor/gulp-stream'),
     defaultOptions = require('./gulp-angular-protractor/default-options.json'),
 
@@ -27,6 +27,8 @@ var
 
 module.exports = function (options) {
     gutil.log(PLUGIN_NAME + ' - The plugin is retrieved and will start soon');
+
+    let webDriver = webDriverFactory();
 
     var
         protractorConfiguration,
