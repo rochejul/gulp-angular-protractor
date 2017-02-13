@@ -9,8 +9,10 @@
     "email": "roche.jul@gmail.com",
     "url": "https://github.com/rochejul"
   },
+  "engineStrict": true,
   "engines": {
-    "node": ">=0.10.0"
+    "node": ">=6.9.x",
+    "npm": ">=3.10.8"
   },
   "scripts": {
     "bump-release": "npm test && npm run npmversion -- --unpreid --git-push",
