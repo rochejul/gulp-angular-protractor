@@ -1,6 +1,3 @@
-/*jshint node: true*/
-/*global require: true, module: true*/
-
 /**
  * Expose the gulp-angular-protractor plugin
  *

@@ -1,6 +1,3 @@
-/*jshint node: true, camelcase: false*/
-/*global require: true, module: true, process: true*/
-
 /**
  * Utility module to manage the WebDriver
  *
@@ -27,9 +24,9 @@ module.exports = {
         if (protractorDir) {
             return protractorDir;
         }
-        
+
         var result = require.resolve('protractor');
-        
+
         if (result) {
             protractorDir = path.resolve(path.join(path.dirname(result), '..', '..', '.bin'));
             return protractorDir;

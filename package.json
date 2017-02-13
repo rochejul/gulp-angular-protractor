@@ -43,6 +43,8 @@
   },
   "devDependencies": {
     "chai": "1.10.0",
+    "eslint": "2.4.0",
+    "eslint-plugin-node": "2.0.0",
     "mocha": "*",
     "nock": "0.53.0",
     "npmversion": "1.2.1"

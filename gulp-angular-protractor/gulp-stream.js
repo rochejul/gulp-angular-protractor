@@ -1,10 +1,5 @@
-/*jshint node: true, camelcase: false*/
-/*global require: true, module: true*/
-
 /**
  * Stream representation to include the process (override of the gulp protractor plugin)
- *
- * TODO: try to enhance that with a real override
  *
  * @author Julien Roche
  * @version 0.0.6
