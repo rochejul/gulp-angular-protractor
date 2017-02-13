@@ -13,7 +13,6 @@
     "node": ">=0.10.0"
   },
   "scripts": {
-    "npmversion": "node ./node_modules/npmversion/bin/npmversion",
     "bump-release": "npm test && npm run npmversion -- --unpreid --git-push",
     "bump-major": "npm test && npm run npmversion -- --increment major --git-push",
     "bump-minor": "npm test && npm run npmversion -- --increment minor --git-push",
@@ -21,6 +20,8 @@
     "bump-major-beta": "npm run npmversion -- --increment major --preid beta --nogit-tag --git-push",
     "bump-minor-beta": "npm run npmversion -- --increment minor --preid beta --nogit-tag --git-push",
     "bump-patch-beta": "npm run npmversion -- --increment patch --preid beta --nogit-tag --git-push",
+    "npmversion": "node ./node_modules/npmversion/bin/npmversion",
+    "snapshot": "npm shrinkwrap --only=prod",
     "test": "mocha --recursive --colors test/"
   },
   "files": [
