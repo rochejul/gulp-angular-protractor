@@ -28,13 +28,13 @@ var
 module.exports = function (options) {
     gutil.log(PLUGIN_NAME + ' - The plugin is retrieved and will start soon');
 
-    let webDriver = webDriverFactory();
+    let mergedOptions = _.extend({ }, defaultOptions, options);
+    let webDriver = webDriverFactory(mergedOptions.protractorModulePath);
 
     var
         protractorConfiguration,
         webDriverShutDownUrl,
-        webDriverUrl = webDriver.DEFAULT_WEB_DRIVER_URL,
-        mergedOptions = _.extend({ }, defaultOptions, options);
+        webDriverUrl = webDriver.DEFAULT_WEB_DRIVER_URL;
 
     if (!mergedOptions.configFile) {
         throw new gutil.PluginError(PLUGIN_NAME, '`configFile` required');

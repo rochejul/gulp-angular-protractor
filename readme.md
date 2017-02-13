@@ -92,6 +92,12 @@ Enables Protractor's [debug mode](https://github.com/angular/protractor/blob/mas
 Type: `Boolean`
 Default: `true`
 
+#### options.protractorModulePath
+Type: `String`
+Default: `undefined`
+
+If you want to use another protractor version instead the default one
+
 ### options.webDriverUpdate
 Type: `Object`
 Default: `undefined`
