@@ -1,35 +1,32 @@
-/*jshint node: true, camelcase: false*/
-/*global require: true, module: true, process: true*/
-
 /**
  * Utility module to manage the WebDriver
  *
  * @author Julien Roche
- * @version 0.2.0
+ * @version 0.4.0
  * @since 0.2.0
  */
 
 'use strict';
 
 // Imports
-var path = require('path');
+const path = require('path');
 
 // Constants & variables
-var protractorDir = null; // caching
+let protractorDir = null; // caching
 
-module.exports = {
+class ProtractorUtils {
     /**
      * @method
      * @static
      * @returns {string}
      */
-    'getProtractorDir': function () {
+    static getProtractorDir() {
         if (protractorDir) {
             return protractorDir;
         }
-        
-        var result = require.resolve('protractor');
-        
+
+        let result = require.resolve('protractor');
+
         if (result) {
             protractorDir = path.resolve(path.join(path.dirname(result), '..', '..', '.bin'));
             return protractorDir;
@@ -37,4 +34,6 @@ module.exports = {
 
         throw new Error('No protractor installation found.');
     }
-};
+}
+
+module.exports = ProtractorUtils;

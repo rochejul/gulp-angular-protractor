@@ -1,6 +1,3 @@
-/*jshint node: true*/
-/*global require: true, module: true*/
-
 /**
  * Expose the gulp-angular-protractor plugin
  *
@@ -21,7 +18,7 @@ var
     _ = require('lodash'),
 
     // Import internal API
-    webDriver = require('./gulp-angular-protractor/web-driver'),
+    webDriverFactory = require('./gulp-angular-protractor/web-driver'),
     gulpStream = require('./gulp-angular-protractor/gulp-stream'),
     defaultOptions = require('./gulp-angular-protractor/default-options.json'),
 
@@ -31,11 +28,13 @@ var
 module.exports = function (options) {
     gutil.log(PLUGIN_NAME + ' - The plugin is retrieved and will start soon');
 
+    let mergedOptions = _.extend({ }, defaultOptions, options);
+    let webDriver = webDriverFactory(mergedOptions.protractorModulePath);
+
     var
         protractorConfiguration,
         webDriverShutDownUrl,
-        webDriverUrl = webDriver.DEFAULT_WEB_DRIVER_URL,
-        mergedOptions = _.extend({ }, defaultOptions, options);
+        webDriverUrl = webDriver.DEFAULT_WEB_DRIVER_URL;
 
     if (!mergedOptions.configFile) {
         throw new gutil.PluginError(PLUGIN_NAME, '`configFile` required');

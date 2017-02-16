@@ -1,37 +1,27 @@
-/*jshint node: true, camelcase: false*/
-/*global require: true, module: true*/
-
 /**
  * Stream representation to include the process (override of the gulp protractor plugin)
  *
- * TODO: try to enhance that with a real override
- *
  * @author Julien Roche
- * @version 0.0.6
+ * @version 0.4.0
  * @since 0.0.1
  */
 
 'use strict';
 
-var
-    // Import gulp plugins
-    gutil = require('gulp-util'),
-    PluginError = gutil.PluginError,
+// Imports
+const gutil = require('gulp-util');
+const es = require('event-stream');
+const path = require('path');
+const webDriver = require('./web-driver');
 
-    // Import required API
-    es = require('event-stream'),
-    path = require('path'),
-
-    // Import internal API
-    webDriver = require('./web-driver'),
-
-    // Constants
-    PLUGIN_NAME = require('./constants.json').PLUGIN_NAME;
+// Constants
+const PluginError = gutil.PluginError;
+const PLUGIN_NAME = require('./constants.json').PLUGIN_NAME;
 
 module.exports = function (options, webDriverUrl, autoStartServer) {
-    var files = [],
-        args = options.args ? options.args.slice(0) : [ ],
-        verbose = options.verbose !== false;
+    let files = [];
+    let args = options.args ? options.args.slice(0) : [ ];
+    let verbose = options.verbose !== false;
 
     if (options.debug) {
         args.push('debug');
@@ -42,8 +32,6 @@ module.exports = function (options, webDriverUrl, autoStartServer) {
             files.push(file.path);
         },
         function() {
-            var self = this;
-
             // Attach Files, if any
             if (files.length) {
                 args.push('--specs');
@@ -51,7 +39,7 @@ module.exports = function (options, webDriverUrl, autoStartServer) {
             }
 
             // Pass in the config file
-            var configFilePath = path.resolve(path.join(process.cwd(), options.configFile));
+            let configFilePath = path.resolve(path.join(process.cwd(), options.configFile));
             gutil.log(PLUGIN_NAME + ' - We have the config file to the following path: ' + configFilePath);
             args.unshift(configFilePath);
 
@@ -59,24 +47,24 @@ module.exports = function (options, webDriverUrl, autoStartServer) {
             try {
                 if (autoStartServer) {
                     // Start the update, run the server, run protractor and stop the server
-                    webDriver.webDriverUpdateAndStart(function () {
+                    webDriver.webDriverUpdateAndStart(() => {
                         gutil.log(PLUGIN_NAME + ' - We will run the Protractor engine');
 
                         webDriver
-                            .runProtractorAndWait(args, function(code) {
-                                if (self) {
+                            .runProtractorAndWait(args, (code) => {
+                                if (this) {
                                     try {
-                                        webDriver.webDriverStandaloneStop(webDriverUrl, function () {
+                                        webDriver.webDriverStandaloneStop(webDriverUrl, () => {
                                             if (code) {
-                                                self.emit('error', new PluginError(PLUGIN_NAME, 'protractor exited with code ' + code));
+                                                this.emit('error', new PluginError(PLUGIN_NAME, 'protractor exited with code ' + code));
 
                                             } else {
-                                                self.emit('end');
+                                                this.emit('end');
                                             }
                                         });
 
                                     } catch (err) {
-                                        self.emit('error', new PluginError(PLUGIN_NAME, err));
+                                        this.emit('error', new PluginError(PLUGIN_NAME, err));
                                     }
                                 }
                             });
@@ -84,13 +72,13 @@ module.exports = function (options, webDriverUrl, autoStartServer) {
 
                 } else {
                     // Just run protractor
-                    webDriver.runProtractorAndWait(args, function (code) {
-                        if (self) {
+                    webDriver.runProtractorAndWait(args, (code) => {
+                        if (this) {
                             if (code) {
-                                self.emit('error', new PluginError(PLUGIN_NAME, 'protractor exited with code ' + code));
+                                this.emit('error', new PluginError(PLUGIN_NAME, 'protractor exited with code ' + code));
 
                             } else {
-                                self.emit('end');
+                                this.emit('end');
                             }
                         }
                     });
