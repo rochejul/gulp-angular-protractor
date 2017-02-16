@@ -9,33 +9,25 @@
 'use strict';
 
 // Imports
-var
-    // Import gulp plugins
-    gutil = require('gulp-util'),
-
-    // Import required API
-    url = require('url'),
-    http = require('http'),
-    childProcess = require('child_process'),
-
-    // Import internals libraries
-    protractorUtils = require('./protractor-utils');
+const gutil = require('gulp-util');
+const url = require('url');
+const http = require('http');
+const childProcess = require('child_process');
+const protractorUtils = require('./protractor-utils');
 
 // Constants & variables
-var
-    PLUGIN_NAME = require('./constants.json').PLUGIN_NAME,
-    IS_WINDOWS = /^win/.test(process.platform),
-    WIN_COMMAND_EXTENSION = IS_WINDOWS ? '.cmd' : '',
-    COMMAND_RELATIVE_PATH = IS_WINDOWS ? '' : './',
+const PLUGIN_NAME = require('./constants.json').PLUGIN_NAME;
+const IS_WINDOWS = /^win/.test(process.platform);
+const WIN_COMMAND_EXTENSION = IS_WINDOWS ? '.cmd' : '';
+const COMMAND_RELATIVE_PATH = IS_WINDOWS ? '' : './';
+const PROTRACTOR_COMMAND = 'protractor' + WIN_COMMAND_EXTENSION;
 
-    PROTRACTOR_COMMAND = 'protractor' + WIN_COMMAND_EXTENSION,
-
-    WEB_DRIVER_LOG_STARTED = 'Started org.openqa.jetty.jetty.Server',
-    WEB_DRIVER_LOG_STARTED_NEW = 'Selenium Server is up and running',
-    WEB_DRIVER_LOG_STOPPED = 'Command request: shutDownSeleniumServer',
-    WEB_DRIVER_SHUTDOWN_PATH = '/selenium-server/driver/?cmd=shutDownSeleniumServer',
-    WEB_DRIVER_COMMAND = 'webdriver-manager' + WIN_COMMAND_EXTENSION,
-    WEB_DRIVER_START_COMMAND = 'start';
+const WEB_DRIVER_LOG_STARTED = 'Started org.openqa.jetty.jetty.Server';
+const WEB_DRIVER_LOG_STARTED_NEW = 'Selenium Server is up and running';
+const WEB_DRIVER_LOG_STOPPED = 'Command request: shutDownSeleniumServer';
+const WEB_DRIVER_SHUTDOWN_PATH = '/selenium-server/driver/?cmd=shutDownSeleniumServer';
+const WEB_DRIVER_COMMAND = 'webdriver-manager' + WIN_COMMAND_EXTENSION;
+const WEB_DRIVER_START_COMMAND = 'start';
 
 module.exports = function (protractorModulePath) {
     let protractorDirToUse = protractorModulePath ? protractorModulePath : protractorUtils.getProtractorDir();
@@ -59,10 +51,10 @@ module.exports = function (protractorModulePath) {
          */
         'getWebDriverShutdownUrl': function (webDriverUrl) {
             if (webDriverUrl) {
-                var urlMetaData = url.parse(webDriverUrl);
+                let urlMetaData = url.parse(webDriverUrl);
 
                 if (urlMetaData && urlMetaData.host) {
-                    return urlMetaData.protocol + '//' + urlMetaData.host + WEB_DRIVER_SHUTDOWN_PATH;
+                    return `${urlMetaData.protocol}//${urlMetaData.host}${WEB_DRIVER_SHUTDOWN_PATH}`;
                 }
             }
 
@@ -94,7 +86,7 @@ module.exports = function (protractorModulePath) {
          * @param {Function} callback
          */
         'runProtractorAndWait': function (args, callback) {
-            var child = this
+            let child = this
                 .runProtractor(args)
                 .on('exit', function (code) {
                     if (child) {
@@ -119,8 +111,12 @@ module.exports = function (protractorModulePath) {
         'webDriverStandaloneStart': function (callback, verbose, startOptions) {
             gutil.log(PLUGIN_NAME + ' - Webdriver standalone server will be started');
 
+            let callbackWasCalled = false;
+            let logOutput = true;
+            let command;
+
             function _interceptLogData(data) {
-                var dataString = data.toString();
+                let dataString = data.toString();
 
                 if (logOutput && verbose) {
                     gutil.log(dataString);
@@ -141,14 +137,13 @@ module.exports = function (protractorModulePath) {
                 }
             }
 
-            var
-                callbackWasCalled = false,
-                logOutput = true,
-                command = childProcess.spawn(
-                    COMMAND_RELATIVE_PATH + WEB_DRIVER_COMMAND,
-                    [WEB_DRIVER_START_COMMAND].concat(startOptions && startOptions.args ? startOptions.args : []),
-                    {'cwd': protractorDirToUse}
-                );
+            command = childProcess.spawn(
+                COMMAND_RELATIVE_PATH + WEB_DRIVER_COMMAND,
+                [WEB_DRIVER_START_COMMAND].concat(startOptions && startOptions.args ? startOptions.args : []),
+                {
+                    'cwd': protractorDirToUse
+                }
+            );
 
             command.once('close', function (errorCode) {
                 gutil.log(PLUGIN_NAME + ' - Webdriver standalone server will be closed');
@@ -171,9 +166,8 @@ module.exports = function (protractorModulePath) {
          * @param {Function} callback
          */
         'webDriverStandaloneStop': function (webDriverUrl, callback) {
-            var
-                shutDownUrl = this.getWebDriverShutdownUrl(webDriverUrl),
-                shutDownUrlMetaData = url.parse(shutDownUrl);
+            let shutDownUrl = this.getWebDriverShutdownUrl(webDriverUrl);
+            let shutDownUrlMetaData = url.parse(shutDownUrl);
 
             http
                 .get({
@@ -199,10 +193,10 @@ module.exports = function (protractorModulePath) {
          * @param {Function} cb
          */
         'webDriverUpdate': function (optsOrCallback, cb) {
-            var callback = (cb ? cb : optsOrCallback);
-            var options = (cb ? optsOrCallback : null);
-            var args = ['update', '--standalone'];
-            var browsers = ['chrome'];
+            let callback = cb ? cb : optsOrCallback;
+            let options = cb ? optsOrCallback : null;
+            let args = ['update', '--standalone'];
+            let browsers = ['chrome'];
 
             if (options) {
                 if (options.browsers && options.browsers.length > 0) {
@@ -241,12 +235,11 @@ module.exports = function (protractorModulePath) {
          * @param {Object} [startOptions]
          */
         'webDriverUpdateAndStart': function (callback, verbose, updateOptions, startOptions) {
-            var self = this;
             gutil.log(PLUGIN_NAME + ' - Webdriver standalone will be updated');
 
-            this.webDriverUpdate(updateOptions, function () {
+            this.webDriverUpdate(updateOptions, () => {
                 gutil.log(PLUGIN_NAME + ' - Webdriver standalone is updated');
-                self.webDriverStandaloneStart(callback, verbose, startOptions);
+                this.webDriverStandaloneStart(callback, verbose, startOptions);
             });
         }
     };
