@@ -12,13 +12,12 @@
 const gutil = require('gulp-util');
 const es = require('event-stream');
 const path = require('path');
-const webDriver = require('./web-driver');
 
 // Constants
 const PluginError = gutil.PluginError;
 const PLUGIN_NAME = require('./constants.json').PLUGIN_NAME;
 
-module.exports = function (options, webDriverUrl, autoStartServer) {
+module.exports = function (options, webDriverUrl, autoStartServer, webDriver) {
     let files = [];
     let args = options.args ? options.args.slice(0) : [ ];
     let verbose = options.verbose !== false;

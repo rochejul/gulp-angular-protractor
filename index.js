@@ -68,10 +68,10 @@ module.exports = function (options) {
         gutil.log(PLUGIN_NAME + ' - The selenium address used is: ' + webDriverUrl);
         gutil.log(PLUGIN_NAME + ' - The selenium shutdown address used is: ' + webDriverShutDownUrl);
 
-        return gulpStream(mergedOptions, webDriverUrl, true);
+        return gulpStream(mergedOptions, webDriverUrl, true, webDriver);
 
     } else {
         gutil.log(PLUGIN_NAME + ' - Basic use (as the gulp-protractor plugin).');
-        return gulpStream(mergedOptions, webDriverUrl, false);
+        return gulpStream(mergedOptions, webDriverUrl, false, webDriver);
     }
 };
