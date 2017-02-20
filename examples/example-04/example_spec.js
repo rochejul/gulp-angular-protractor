@@ -15,7 +15,7 @@ describe('angularjs homepage', function () {
         });
         it('should list todos', function () {
             expect(todoList.count()).toEqual(2);
-            expect(todoList.get(1).getText()).toEqual('build an angular app');
+            expect(todoList.get(1).getText()).toEqual('build an AngularJS app');
         });
         it('should add a todo', function () {
             var addTodo = element(by.model('todoList.todoText'));
@@ -32,4 +32,3 @@ describe('angularjs homepage', function () {
         });
     });
 });
-//# sourceMappingURL=example_spec.js.map
