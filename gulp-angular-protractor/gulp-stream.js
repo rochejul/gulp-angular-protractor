@@ -45,8 +45,7 @@ module.exports = function (options, webDriverUrl, autoStartServer, webDriver) {
             // Start the Web Driver server
             try {
                 if (autoStartServer) {
-                    // Start the update, run the server, run protractor and stop the server
-                    webDriver.webDriverUpdateAndStart(() => {
+                      let callback = () => {
                         gutil.log(PLUGIN_NAME + ' - We will run the Protractor engine');
 
                         webDriver
@@ -67,8 +66,13 @@ module.exports = function (options, webDriverUrl, autoStartServer, webDriver) {
                                     }
                                 }
                             });
-                    }, verbose, options.webDriverUpdate, options.webDriverStart);
-
+                    };
+                    // Start the update, run the server, run protractor and stop the server
+                    if (options.skipWebDriverUpdate) {
+                      webDriver.webDriverStandaloneStart(callback, verbose, options.webDriverStart);
+                    } else {
+                      webDriver.webDriverUpdateAndStart(callback, verbose, options.webDriverUpdate, options.webDriverStart);
+                    }
                 } else {
                     // Just run protractor
                     webDriver.runProtractorAndWait(args, (code) => {
