@@ -67,8 +67,8 @@ module.exports = function (options, webDriverUrl, autoStartServer, webDriver) {
                                 }
                             });
                     };
-                    // Start the update, run the server, run protractor and stop the server
-                    if (options.skipWebDriverUpdate) {
+                    // Start the update (maybe), run the server, run protractor and stop the server
+                    if (options.webDriverUpdate && options.webDriverUpdate.skip) {
                       webDriver.webDriverStandaloneStart(callback, verbose, options.webDriverStart);
                     } else {
                       webDriver.webDriverUpdateAndStart(callback, verbose, options.webDriverUpdate, options.webDriverStart);
