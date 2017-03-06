@@ -102,6 +102,10 @@ If you want to use another protractor version instead the default one
 Type: `Object`
 Default: `undefined`
 
+### options.webDriverUpdate.skip
+Type: `Boolean`
+Default: `false`
+
 ### options.webDriverUpdate.browsers
 Type: `Array`
 Default: `['chrome']`
