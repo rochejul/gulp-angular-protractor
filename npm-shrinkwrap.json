@@ -1,6 +1,6 @@
 {
   "name": "gulp-angular-protractor",
-  "version": "1.0.0-beta",
+  "version": "1.0.0",
   "dependencies": {
     "event-stream": {
       "version": "3.1.5",
