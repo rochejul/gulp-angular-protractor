@@ -1,6 +1,6 @@
 {
   "name": "gulp-angular-protractor",
-  "version": "0.4.2",
+  "version": "1.0.0",
   "description": "Based on the gulp-protractor plugin with an option to start / stop automatically the webdriver server",
   "license": "MIT",
   "repository": "rochejul/gulp-angular-protractor",
@@ -21,6 +21,7 @@
     "bump-patch": "npm test && npm run npmversion -- --increment patch --git-push",
     "bump-major-beta": "npm run npmversion -- --increment major --preid beta --nogit-tag --git-push",
     "bump-minor-beta": "npm run npmversion -- --increment minor --preid beta --nogit-tag --git-push",
+    "generate-shrinkwrap": "npm shrinkwrap --only=prod",
     "bump-patch-beta": "npm run npmversion -- --increment patch --preid beta --nogit-tag --git-push",
     "npmversion": "node ./node_modules/npmversion/bin/npmversion",
     "snapshot": "npm shrinkwrap --only=prod",
@@ -37,9 +38,7 @@
   "dependencies": {
     "event-stream": "3.1.5",
     "gulp-util": "3.0.1",
-    "lodash": "2.4.1",
-    "protractor": "4.0.11",
-    "webdriver-manager": "10.2.8"
+    "lodash": "2.4.1"
   },
   "devDependencies": {
     "chai": "1.10.0",
@@ -47,6 +46,8 @@
     "eslint-plugin-node": "2.0.0",
     "mocha": "*",
     "nock": "0.53.0",
-    "npmversion": "1.2.1"
+    "npmversion": "1.2.1",
+    "protractor": "4.0.11",
+    "webdriver-manager": "10.2.8"
   }
 }

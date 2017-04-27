@@ -14,7 +14,9 @@
     "gulp": "latest",
     "gulp-angular-protractor": "latest",
     "jasmine-reporters": "2.2.0",
+    "protractor": "4.0.11",
     "typescript": "1.8.10",
-    "typings": "1.3.0"
+    "typings": "1.3.0",
+    "webdriver-manager": "10.2.8"
   }
 }

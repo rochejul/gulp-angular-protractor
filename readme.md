@@ -15,6 +15,35 @@ $ npm install --save-dev gulp-angular-protractor
 ```
 
 
+## Side dependencies
+
+You should declare what expected version of protractor and webdriver manager you want to use:
+
+```json
+{
+  "name": "example-gulp-protractor",
+  "version": "0.0.1",
+  "description": "",
+  "scripts": {
+    "gulp": "node node_modules/gulp/bin/gulp.js",
+    "test": "npm run gulp protractor"
+  },
+  "devDependencies": {
+    "gulp": "latest",
+    "gulp-angular-protractor": "latest",
+    "protractor": "4.0.11",
+    "webdriver-manager": "10.2.8"
+  }
+}
+```
+
+
+Be carefull: some protractor and webdriver dependencies version required:
+- Some specific node version
+- Some specific npm version
+- Some specific browser version
+- ...
+
 ## Usage
 
 ```js

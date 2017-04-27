@@ -9,6 +9,8 @@
   "devDependencies": {
     "gulp": "latest",
     "gulp-protractor": "latest",
-    "gulp-angular-protractor": "latest"
+    "gulp-angular-protractor": "latest",
+    "protractor": "4.0.11",
+    "webdriver-manager": "10.2.8"
   }
 }
