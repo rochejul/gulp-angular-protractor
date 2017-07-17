@@ -2,6 +2,8 @@
 [![Build Status](https://travis-ci.org/rochejul/gulp-angular-protractor.svg?branch=master)](https://travis-ci.org/rochejul/gulp-angular-protractor)[![Dependency Status](https://david-dm.org/rochejul/gulp-angular-protractor.svg)](https://david-dm.org/rochejul/gulp-angular-protractor)
 [![devDependency Status](https://david-dm.org/rochejul/gulp-angular-protractor/dev-status.svg)](https://david-dm.org/rochejul/gulp-angular-protractor#info=devDependencies)
 
+[![Known Vulnerabilities](https://snyk.io/test/github/rochejul/gulp-angular-protractor/badge.svg)](https://snyk.io/test/github/rochejul/gulp-angular-protractor)
+
 [![NPM](https://nodei.co/npm/gulp-angular-protractor.png?downloads=true&downloadRank=true)](https://nodei.co/npm/gulp-angular-protractor/)
 [![NPM](https://nodei.co/npm-dl/gulp-angular-protractor.png?&months=6&height=3)](https://nodei.co/npm/gulp-angular-protractor/)
 
