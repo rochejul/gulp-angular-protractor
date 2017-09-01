@@ -245,13 +245,16 @@ module.exports = function (protractorModulePath) {
          * @param {boolean} [verbose=true]
          * @param {Object} [updateOptions]
          * @param {Object} [startOptions]
+         * @returns {Promise.<WebDriverService~stopServer>}
          */
         'webDriverUpdateAndStart': function (callback, verbose, updateOptions, startOptions) {
             gutil.log(PLUGIN_NAME + ' - Webdriver standalone will be updated');
 
-            this.webDriverUpdate(updateOptions, () => {
-                gutil.log(PLUGIN_NAME + ' - Webdriver standalone is updated');
-                this.webDriverStandaloneStart(callback, verbose, startOptions);
+            return new Promise((resolve) => {
+                this.webDriverUpdate(updateOptions, () => {
+                    gutil.log(PLUGIN_NAME + ' - Webdriver standalone is updated');
+                    resolve(this.webDriverStandaloneStart(callback, verbose, startOptions));
+                });
             });
         }
     };
