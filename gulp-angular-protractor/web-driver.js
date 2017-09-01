@@ -100,6 +100,10 @@ module.exports = function (protractorModulePath) {
         },
 
         /**
+         * @callback WebDriverService~stopServer
+         */
+
+        /**
          * Start the WebDriver server
          *
          * @method
@@ -107,6 +111,7 @@ module.exports = function (protractorModulePath) {
          * @param {Function} callback
          * @param {boolean} [verbose=true]
          * @param {Object} [startOptions]
+         * @returns {WebDriverService~stopServer} Function to stop the server
          */
         'webDriverStandaloneStart': function (callback, verbose, startOptions) {
             gutil.log(PLUGIN_NAME + ' - Webdriver standalone server will be started');
@@ -155,6 +160,13 @@ module.exports = function (protractorModulePath) {
 
             command.stderr.on('data', _interceptLogData);
             command.stdout.on('data', _interceptLogData);
+
+            return function () {
+                if (!callbackWasCalled) {
+                    command.stdin.pause();
+                    command.kill();
+                }
+            };
         },
 
         /**
