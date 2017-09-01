@@ -11,7 +11,6 @@
 // Imports
 const gutil = require('gulp-util');
 const url = require('url');
-const http = require('http');
 const childProcess = require('child_process');
 const protractorUtils = require('./protractor-utils');
 
@@ -25,7 +24,6 @@ const PROTRACTOR_COMMAND = 'protractor' + WIN_COMMAND_EXTENSION;
 const WEB_DRIVER_LOG_STARTED = 'Started org.openqa.jetty.jetty.Server';
 const WEB_DRIVER_LOG_STARTED_NEW = 'Selenium Server is up and running';
 const WEB_DRIVER_LOG_STOPPED = 'Command request: shutDownSeleniumServer';
-const WEB_DRIVER_SHUTDOWN_PATH = '/selenium-server/driver/?cmd=shutDownSeleniumServer';
 const WEB_DRIVER_COMMAND = 'webdriver-manager' + WIN_COMMAND_EXTENSION;
 const WEB_DRIVER_START_COMMAND = 'start';
 
@@ -41,25 +39,6 @@ module.exports = function (protractorModulePath) {
          */
         'DEFAULT_WEB_DRIVER_URL': 'http://localhost:4444/wd/hub',
 
-        /**
-         * Return the WebDriver shutdown url based on the webDriverUrl
-         *
-         * @method
-         * @static
-         * @param {string} webDriverUrl
-         * @returns {string}
-         */
-        'getWebDriverShutdownUrl': function (webDriverUrl) {
-            if (webDriverUrl) {
-                let urlMetaData = url.parse(webDriverUrl);
-
-                if (urlMetaData && urlMetaData.host) {
-                    return `${urlMetaData.protocol}//${urlMetaData.host}${WEB_DRIVER_SHUTDOWN_PATH}`;
-                }
-            }
-
-            return null;
-        },
 
         /**
          * Execute the protractor engine
@@ -167,33 +146,6 @@ module.exports = function (protractorModulePath) {
                     command.kill();
                 }
             };
-        },
-
-        /**
-         * Stop the WebDriver server
-         *
-         * @method
-         * @static
-         * @param {string} webDriverUrl
-         * @param {Function} callback
-         */
-        'webDriverStandaloneStop': function (webDriverUrl, callback) {
-            let shutDownUrl = this.getWebDriverShutdownUrl(webDriverUrl);
-            let shutDownUrlMetaData = url.parse(shutDownUrl);
-
-            http
-                .get({
-                    'host': shutDownUrlMetaData.hostname,
-                    'port': shutDownUrlMetaData.port,
-                    'path': shutDownUrlMetaData.path
-                }, function () {
-                    gutil.log(PLUGIN_NAME + ' - Webdriver standalone server is stopped');
-                    callback();
-                })
-                .on('error', function (err) {
-                    gutil.log(PLUGIN_NAME + ' - An error occured to stop the Webdriver standalone server');
-                    callback(err);
-                });
         },
 
         /**
