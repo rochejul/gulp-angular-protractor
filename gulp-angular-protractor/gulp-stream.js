@@ -19,7 +19,7 @@ const PLUGIN_NAME = require('./constants.json').PLUGIN_NAME;
 
 module.exports = function (options, webDriverUrl, autoStartServer, webDriver) {
     let files = [];
-    let args = options.args ? options.args.slice(0) : [ ];
+    let args = options.args ? options.args.slice(0) : [];
     let verbose = options.verbose !== false;
 
     if (options.debug) {
@@ -27,10 +27,10 @@ module.exports = function (options, webDriverUrl, autoStartServer, webDriver) {
     }
 
     return es.through(
-        function(file) {
+        function (file) {
             files.push(file.path);
         },
-        function() {
+        function () {
             // Attach Files, if any
             if (files.length) {
                 args.push('--specs');
@@ -45,21 +45,16 @@ module.exports = function (options, webDriverUrl, autoStartServer, webDriver) {
             // Start the Web Driver server
             try {
                 if (autoStartServer) {
-                      let callback = () => {
+                    let stopServer;
+                    let callback = () => {
                         gutil.log(PLUGIN_NAME + ' - We will run the Protractor engine');
 
                         webDriver
-                            .runProtractorAndWait(args, (code) => {
+                            .runProtractorAndWait(args, () => {
                                 if (this) {
                                     try {
-                                        webDriver.webDriverStandaloneStop(webDriverUrl, () => {
-                                            if (code) {
-                                                this.emit('error', new PluginError(PLUGIN_NAME, 'protractor exited with code ' + code));
-
-                                            } else {
-                                                this.emit('end');
-                                            }
-                                        });
+                                        stopServer();
+                                        this.emit('end');
 
                                     } catch (err) {
                                         this.emit('error', new PluginError(PLUGIN_NAME, err));
@@ -69,9 +64,13 @@ module.exports = function (options, webDriverUrl, autoStartServer, webDriver) {
                     };
                     // Start the update (maybe), run the server, run protractor and stop the server
                     if (options.webDriverUpdate && options.webDriverUpdate.skip) {
-                      webDriver.webDriverStandaloneStart(callback, verbose, options.webDriverStart);
+                        stopServer = webDriver.webDriverStandaloneStart(callback, verbose, options.webDriverStart);
                     } else {
-                      webDriver.webDriverUpdateAndStart(callback, verbose, options.webDriverUpdate, options.webDriverStart);
+                        webDriver
+                            .webDriverUpdateAndStart(callback, verbose, options.webDriverUpdate, options.webDriverStart)
+                            .then(function (stopServerHandler) {
+                                stopServer = stopServerHandler;
+                            });
                     }
                 } else {
                     // Just run protractor
