@@ -8,7 +8,7 @@
 
 'use strict';
 
-var
+const
     // Import gulp plugins
     gutil = require('gulp-util'),
 
@@ -33,7 +33,6 @@ module.exports = function (options) {
 
     var
         protractorConfiguration,
-        webDriverShutDownUrl,
         webDriverUrl = webDriver.DEFAULT_WEB_DRIVER_URL;
 
     if (!mergedOptions.configFile) {
@@ -54,19 +53,11 @@ module.exports = function (options) {
         }
 
         if (protractorConfiguration.config.seleniumAddress) {
-            webDriverShutDownUrl = webDriver.getWebDriverShutdownUrl(protractorConfiguration.config.seleniumAddress);
-
-            if (webDriverShutDownUrl) {
-                webDriverUrl = protractorConfiguration.config.seleniumAddress;
-
-            } else {
-                throw new gutil.PluginError(PLUGIN_NAME, 'The selenium address is not a valid url');
-            }
+            webDriverUrl = protractorConfiguration.config.seleniumAddress;
         }
 
         gutil.log(PLUGIN_NAME + ' - The selenium address is: ' + protractorConfiguration.config.seleniumAddress);
         gutil.log(PLUGIN_NAME + ' - The selenium address used is: ' + webDriverUrl);
-        gutil.log(PLUGIN_NAME + ' - The selenium shutdown address used is: ' + webDriverShutDownUrl);
 
         return gulpStream(mergedOptions, webDriverUrl, true, webDriver);
 
