@@ -21,6 +21,7 @@ const WIN_COMMAND_EXTENSION = IS_WINDOWS ? '.cmd' : '';
 const COMMAND_RELATIVE_PATH = IS_WINDOWS ? '' : './';
 const PROTRACTOR_COMMAND = 'protractor' + WIN_COMMAND_EXTENSION;
 
+const SELENIUM_PID = ' seleniumProcess.pid';
 const WEB_DRIVER_LOG_STARTED = 'Started org.openqa.jetty.jetty.Server';
 const WEB_DRIVER_LOG_STARTED_NEW = 'Selenium Server is up and running';
 const WEB_DRIVER_LOG_STOPPED = 'Command request: shutDownSeleniumServer';
@@ -98,6 +99,7 @@ module.exports = function (protractorModulePath) {
             let callbackWasCalled = false;
             let logOutput = true;
             let command;
+            let seleniumPid = null;
 
             function _interceptLogData(data) {
                 let dataString = data.toString();
@@ -118,6 +120,10 @@ module.exports = function (protractorModulePath) {
                     if (verbose) {
                         gutil.log(dataString);
                     }
+
+                } else if (dataString.indexOf(SELENIUM_PID) >= 0) {
+                    seleniumPid = parseInt(dataString.split(SELENIUM_PID)[1].substr(1).trim(), 10);
+                    gutil.log(PLUGIN_NAME + ' - Webdriver standalone server PID is detected:' + seleniumPid);
                 }
             }
 
@@ -141,9 +147,8 @@ module.exports = function (protractorModulePath) {
             command.stdout.on('data', _interceptLogData);
 
             return function () {
-                if (!callbackWasCalled) {
-                    command.stdin.pause();
-                    command.kill();
+                if (seleniumPid) {
+                    process.kill(seleniumPid, 'SIGINT');
                 }
             };
         },

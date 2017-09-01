@@ -51,6 +51,8 @@ module.exports = function (options, webDriverUrl, autoStartServer, webDriver) {
 
                         webDriver
                             .runProtractorAndWait(args, () => {
+                                gutil.log(PLUGIN_NAME + ' - We will stop the Protractor engine');
+
                                 if (this) {
                                     try {
                                         stopServer();
