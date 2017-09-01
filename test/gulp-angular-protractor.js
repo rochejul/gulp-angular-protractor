@@ -45,12 +45,6 @@ describe('gulp-angular-protractor tests - ', function () {
 				}).to.throw('No protractor configuration was exported');
 			});
 
-			it('throw an exception if the protractor configuration contains an invalid selenium address url', function () {
-				chai.expect(function () {
-					angularProtractor({ 'autoStartStopServer': true, 'configFile': './test/resources/protractor.conf.invalid.url.js' });
-				}).to.throw('The selenium address is not a valid url');
-			});
-
 			it('should return the stream object', function () {
 				var streamObject = angularProtractor({ 'autoStartStopServer': true, 'configFile': './test/resources/protractor.conf.valid.js' });
 				chai.expect(streamObject).to.exist();
