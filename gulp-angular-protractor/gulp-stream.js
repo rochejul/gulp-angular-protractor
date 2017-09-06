@@ -42,6 +42,14 @@ module.exports = function (options, webDriverUrl, autoStartServer, webDriver) {
             gutil.log(PLUGIN_NAME + ' - We have the config file to the following path: ' + configFilePath);
             args.unshift(configFilePath);
 
+            function finalize(ctx, code) {
+                if (code) {
+                    ctx.emit('error', new PluginError(PLUGIN_NAME, 'protractor exited with code ' + code));
+                } else {
+                    ctx.emit('end');
+                }
+            }
+
             // Start the Web Driver server
             try {
                 if (autoStartServer) {
@@ -50,14 +58,13 @@ module.exports = function (options, webDriverUrl, autoStartServer, webDriver) {
                         gutil.log(PLUGIN_NAME + ' - We will run the Protractor engine');
 
                         webDriver
-                            .runProtractorAndWait(args, () => {
+                            .runProtractorAndWait(args, (code) => {
                                 gutil.log(PLUGIN_NAME + ' - We will stop the Protractor engine');
 
                                 if (this) {
                                     try {
                                         stopServer();
-                                        this.emit('end');
-
+                                        finalize(this, code);
                                     } catch (err) {
                                         this.emit('error', new PluginError(PLUGIN_NAME, err));
                                     }
@@ -77,14 +84,7 @@ module.exports = function (options, webDriverUrl, autoStartServer, webDriver) {
                 } else {
                     // Just run protractor
                     webDriver.runProtractorAndWait(args, (code) => {
-                        if (this) {
-                            if (code) {
-                                this.emit('error', new PluginError(PLUGIN_NAME, 'protractor exited with code ' + code));
-
-                            } else {
-                                this.emit('end');
-                            }
-                        }
+                        if (this) finalize(this, code);
                     });
                 }
 
