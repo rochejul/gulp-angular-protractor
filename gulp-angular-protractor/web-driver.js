@@ -9,10 +9,9 @@
 'use strict';
 
 // Imports
-const gutil = require('gulp-util');
-const url = require('url');
 const childProcess = require('child_process');
 const protractorUtils = require('./protractor-utils');
+const log = require('fancy-log');
 
 // Constants & variables
 const PLUGIN_NAME = require('./constants.json').PLUGIN_NAME;
@@ -94,7 +93,7 @@ module.exports = function (protractorModulePath) {
          * @returns {WebDriverService~stopServer} Function to stop the server
          */
         'webDriverStandaloneStart': function (callback, verbose, startOptions) {
-            gutil.log(PLUGIN_NAME + ' - Webdriver standalone server will be started');
+            log(PLUGIN_NAME + ' - Webdriver standalone server will be started');
 
             let callbackWasCalled = false;
             let logOutput = true;
@@ -105,11 +104,11 @@ module.exports = function (protractorModulePath) {
                 let dataString = data.toString();
 
                 if (logOutput && verbose) {
-                    gutil.log(dataString);
+                    log(dataString);
                 }
 
                 if (dataString.indexOf(WEB_DRIVER_LOG_STARTED_NEW) >= 0 || dataString.indexOf(WEB_DRIVER_LOG_STARTED) >= 0) {
-                    gutil.log(PLUGIN_NAME + ' - Webdriver standalone server is started');
+                    log(PLUGIN_NAME + ' - Webdriver standalone server is started');
                     callbackWasCalled = true;
                     logOutput = false;
                     callback();
@@ -118,12 +117,12 @@ module.exports = function (protractorModulePath) {
                     logOutput = true;
 
                     if (verbose) {
-                        gutil.log(dataString);
+                        log(dataString);
                     }
 
                 } else if (dataString.indexOf(SELENIUM_PID) >= 0) {
                     seleniumPid = parseInt(dataString.split(SELENIUM_PID)[1].substr(1).trim(), 10);
-                    gutil.log(PLUGIN_NAME + ' - Webdriver standalone server PID is detected:' + seleniumPid);
+                    log(PLUGIN_NAME + ' - Webdriver standalone server PID is detected:' + seleniumPid);
                 }
             }
 
@@ -136,7 +135,7 @@ module.exports = function (protractorModulePath) {
             );
 
             command.once('close', function (errorCode) {
-                gutil.log(PLUGIN_NAME + ' - Webdriver standalone server will be closed');
+                log(PLUGIN_NAME + ' - Webdriver standalone server will be closed');
 
                 if (!callbackWasCalled) {
                     callback(errorCode);
@@ -205,11 +204,11 @@ module.exports = function (protractorModulePath) {
          * @returns {Promise.<WebDriverService~stopServer>}
          */
         'webDriverUpdateAndStart': function (callback, verbose, updateOptions, startOptions) {
-            gutil.log(PLUGIN_NAME + ' - Webdriver standalone will be updated');
+            log(PLUGIN_NAME + ' - Webdriver standalone will be updated');
 
             return new Promise((resolve) => {
                 this.webDriverUpdate(updateOptions, () => {
-                    gutil.log(PLUGIN_NAME + ' - Webdriver standalone is updated');
+                    log(PLUGIN_NAME + ' - Webdriver standalone is updated');
                     resolve(this.webDriverStandaloneStart(callback, verbose, startOptions));
                 });
             });

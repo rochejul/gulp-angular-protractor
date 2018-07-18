@@ -12,6 +12,7 @@
 const gutil = require('gulp-util');
 const es = require('event-stream');
 const path = require('path');
+const log = require('fancy-log');
 
 // Constants
 const PluginError = gutil.PluginError;
@@ -39,7 +40,7 @@ module.exports = function (options, webDriverUrl, autoStartServer, webDriver) {
 
             // Pass in the config file
             let configFilePath = path.resolve(path.join(process.cwd(), options.configFile));
-            gutil.log(PLUGIN_NAME + ' - We have the config file to the following path: ' + configFilePath);
+            log(PLUGIN_NAME + ' - We have the config file to the following path: ' + configFilePath);
             args.unshift(configFilePath);
 
             function finalize(ctx, code) {
@@ -55,11 +56,11 @@ module.exports = function (options, webDriverUrl, autoStartServer, webDriver) {
                 if (autoStartServer) {
                     let stopServer;
                     let callback = () => {
-                        gutil.log(PLUGIN_NAME + ' - We will run the Protractor engine');
+                        log(PLUGIN_NAME + ' - We will run the Protractor engine');
 
                         webDriver
                             .runProtractorAndWait(args, (code) => {
-                                gutil.log(PLUGIN_NAME + ' - We will stop the Protractor engine');
+                                log(PLUGIN_NAME + ' - We will stop the Protractor engine');
 
                                 if (this) {
                                     try {
