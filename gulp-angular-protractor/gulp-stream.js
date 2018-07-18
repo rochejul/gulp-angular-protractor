@@ -9,13 +9,12 @@
 'use strict';
 
 // Imports
-const gutil = require('gulp-util');
 const es = require('event-stream');
 const path = require('path');
 const log = require('fancy-log');
+const PluginError = require('plugin-error');
 
 // Constants
-const PluginError = gutil.PluginError;
 const PLUGIN_NAME = require('./constants.json').PLUGIN_NAME;
 
 module.exports = function (options, webDriverUrl, autoStartServer, webDriver) {
